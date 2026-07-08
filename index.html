@@ -71,12 +71,28 @@
 
   <!-- Companies -->
   <section class="section" aria-label="Companies">
-    <p class="caption">Over the years, I've been able to work with some amazing companies, orgs and studios</p>
-    <div class="logos">
-      <img src="assets/logos/kenect.svg" alt="Kenect" />
-      <img src="assets/logos/guggenheim.svg" alt="Guggenheim" />
-      <img class="logo--breeze" src="assets/logos/breeze.svg" alt="Breeze" />
-      <img src="assets/logos/autodesk.svg" alt="Autodesk" />
+    <p class="caption">Companies, orgs and studios I've been lucky to work with</p>
+    <div class="logos" id="logo-cycler">
+      <span class="logos__slot">
+        <img src="assets/logos/kenect.svg" alt="Kenect" />
+        <img class="logo--mfa" src="assets/logos/mfa-design.svg" alt="MFA Design" />
+        <img class="logo--previ" src="assets/logos/previ.svg" alt="Previ" />
+      </span>
+      <span class="logos__slot">
+        <img src="assets/logos/guggenheim.svg" alt="Guggenheim" />
+        <img src="assets/logos/collected-works.svg" alt="The Collected Works" />
+        <img src="assets/logos/sunrun.svg" alt="Sunrun" />
+      </span>
+      <span class="logos__slot">
+        <img class="logo--breeze" src="assets/logos/breeze.svg" alt="Breeze" />
+        <img class="logo--mid" src="assets/logos/utah-tech.svg" alt="Utah Tech University" />
+        <img class="logo--tall" src="assets/logos/big-monocle.svg" alt="Big Monocle" />
+      </span>
+      <span class="logos__slot">
+        <img src="assets/logos/autodesk.svg" alt="Autodesk" />
+        <img src="assets/logos/album.svg" alt="Album" />
+        <img src="assets/logos/corso.svg" alt="Corso" />
+      </span>
     </div>
   </section>
 
@@ -117,5 +133,7 @@
 
 <script type="module">
   import { mount } from './js/experiments/flock-of-cursors.js';
+  import { mount as mountLogos } from './js/logo-cycler.js';
   mount(document.getElementById('bento-flock'));
+  mountLogos(document.getElementById('logo-cycler'));
 </script>

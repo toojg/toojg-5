@@ -124,27 +124,57 @@
   font-size: var(--text-caption);
   line-height: var(--leading-caption);
   font-weight: var(--weight-light);
-  color: var(--color-text-muted);
+  color: var(--color-text);
   max-width: 875px;
   margin-inline: auto;
 }
 
+/* Clerk-style cycling slots: each slot is a fixed-height window; JS wraps its
+   logos into a vertical reel and slides it one cell at a time. Without JS the
+   overflow clip simply shows each slot's first logo. */
 .logos {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 64px;
   max-width: 1091px;
   margin: 72px auto 0;
 }
+.logos__slot {
+  flex: 1;
+  height: 56px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.logos__reel {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+.logos__cell {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+/* no-JS fallback: show each slot's first logo centered, hide the rest */
+.logos__slot > img:first-child { margin: auto; }
+.logos__slot > img:not(:first-child) { display: none; }
 .logos img {
   height: 22px;
   width: auto;
-  opacity: .95;
 }
 /* Breeze's checkmark extends above its wordmark, so the flex centering pushes
    the wordmark low; bottom padding re-centers it (art stays 40px = 52 - 12) */
 .logos img.logo--breeze { height: 52px; padding-bottom: 12px; }
+/* Per-logo optical sizing: badge marks (MFA, Big Monocle) and the Previ
+   script shrink illegibly at wordmark height; mid is a small bump for
+   marks with fine subtext (Utah Tech) */
+.logos img.logo--mfa { height: 44px; }
+.logos img.logo--tall { height: 36px; }
+.logos img.logo--previ { height: 28px; }
+.logos img.logo--mid { height: 26px; }
 
 /* ---- Bento grid ----------------------------------------------------------- */
 .bento {
@@ -213,10 +243,11 @@
   .projects { grid-template-columns: 1fr; }
   .project-card { min-height: 420px; }
 
+  /* 2x2 slot grid, like Clerk's mobile strip */
   .logos {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 32px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 48px;
     margin-top: 48px;
   }
   .caption { font-size: 18px; }
@@ -249,9 +280,14 @@
   .project-card { min-height: 360px; padding: 28px; }
 
   .caption { font-size: 17px; }
-  .logos { gap: 28px 40px; margin-top: 40px; }
+  .logos { gap: 8px 32px; margin-top: 40px; }
+  .logos__slot, .logos__cell { height: 48px; }
   .logos img { height: 18px; }
   .logos img.logo--breeze { height: 42px; padding-bottom: 10px; }
+  .logos img.logo--mfa { height: 36px; }
+  .logos img.logo--tall { height: 30px; }
+  .logos img.logo--previ { height: 23px; }
+  .logos img.logo--mid { height: 22px; }
 
   .page-foot { height: 64px; }
 }
