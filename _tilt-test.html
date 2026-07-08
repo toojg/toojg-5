@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tilt test — flock of cursors</title>
+<style>
+  body { margin: 0; font: 14px/1.5 system-ui, sans-serif; background: #111; color: #eee; }
+  .wrap { max-width: 480px; margin: 24px auto; padding: 0 16px; }
+  #stage { width: 100%; height: 360px; background: #1d1d1d; border-radius: 16px; overflow: hidden; }
+  .controls { margin-top: 16px; display: grid; gap: 8px; }
+  label { display: flex; align-items: center; gap: 10px; }
+  label span { width: 130px; }
+  input[type=range] { flex: 1; }
+  #state { margin-top: 12px; font-family: ui-monospace, monospace; font-size: 12px; color: #9a9; white-space: pre; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h3>Flock tilt harness</h3>
+  <p>Forces the touch-device code path and dispatches synthetic <code>deviceorientation</code>
+     events. Drag the sliders to "tilt the phone". Before the first dispatch, touch-drag on
+     the canvas exercises the touch fallback.</p>
+  <div id="stage"></div>
+  <div class="controls">
+    <label><span>gamma (left/right)</span><input id="gamma" type="range" min="-45" max="45" value="0" step="0.5"></label>
+    <label><span>beta (front/back)</span><input id="beta" type="range" min="-45" max="45" value="45" step="0.5"></label>
+    <button id="send">Start sending orientation events</button>
+  </div>
+  <div id="state"></div>
+</div>
+<script>
+  // Pretend to be a touch device before the module reads matchMedia.
+  // Manual-step rAF (?step=1): background tabs pause requestAnimationFrame,
+  // which freezes the sim during automated testing. This queues rAF callbacks
+  // and exposes __step(n) to advance the simulation n frames synchronously.
+  if (new URLSearchParams(location.search).get('step') === '1') {
+    const rafQueue = [];
+    window.requestAnimationFrame = (cb) => { rafQueue.push(cb); return rafQueue.length; };
+    window.cancelAnimationFrame = () => { rafQueue.length = 0; };
+    window.__step = (n = 1) => {
+      for (let i = 0; i < n; i++) {
+        const q = rafQueue.splice(0);
+        for (const cb of q) cb(performance.now());
+      }
+    };
+  }
+
+  const realMatchMedia = window.matchMedia.bind(window);
+  window.matchMedia = (q) => q === '(pointer: coarse)'
+    ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} }
+    : realMatchMedia(q);
+</script>
+<script type="module">
+  import { mount } from './js/experiments/flock-of-cursors.js';
+  mount(document.getElementById('stage'));
+
+  const gamma = document.getElementById('gamma');
+  const beta = document.getElementById('beta');
+  const state = document.getElementById('state');
+  let sending = false;
+
+  function dispatch() {
+    const e = new DeviceOrientationEvent('deviceorientation', {
+      alpha: 0, beta: Number(beta.value), gamma: Number(gamma.value)
+    });
+    window.dispatchEvent(e);
+    state.textContent = `sending: beta=${beta.value} gamma=${gamma.value}`;
+  }
+  window.__dispatch = dispatch; // for automated tests: send one event on demand
+  function start() {
+    if (sending) return;
+    sending = true;
+    dispatch();
+    setInterval(dispatch, 100);
+  }
+  document.getElementById('send').addEventListener('click', start);
+  // ?send=1 starts dispatching immediately — needed to beat the module's 1.5s
+  // no-sensor timeout when testing the tilt path. Without it (no events), the
+  // module should settle into the touch-drag fallback.
+  if (new URLSearchParams(location.search).get('send') === '1') start();
+</script>
+</body>
+</html>

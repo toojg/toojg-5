@@ -1,0 +1,257 @@
+/* ============================================================================
+   site.css — homepage layout: nav, hero, project cards, logos, bento grid.
+   Reproduces the Paper "Home - boarder edits" artboard.
+   ============================================================================ */
+
+.page {
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 var(--page-margin);
+}
+
+/* ---- Nav ------------------------------------------------------------------ */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+}
+
+.nav__brand,
+.nav__link {
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  letter-spacing: var(--tracking-label);
+  font-weight: var(--weight-light);
+  color: var(--color-text);
+}
+
+.nav__links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav__link { transition: color .2s ease; }
+.nav__link:hover { color: var(--color-text-muted); }
+
+/* ---- Hero ----------------------------------------------------------------- */
+.hero {
+  max-width: 1200px;
+  margin: 140px auto 160px;
+  padding: 0 12px;
+  text-align: center;
+  font-size: var(--text-hero);
+  line-height: var(--leading-hero);
+  font-weight: var(--weight-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Each deliberate line — its phrases + inline chips, centered. Wraps on mobile. */
+.hero__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.hero__text { white-space: pre; }
+
+/* Inline image "chip" between phrases */
+.chip {
+  position: relative;
+  display: inline-block;
+  width: 65px;
+  height: 54px;
+  border-radius: 24px;
+  overflow: hidden;
+  outline: 1px solid var(--color-stroke);
+  outline-offset: -1px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  background: #212733;
+}
+.chip > img {
+  position: absolute;
+  object-fit: cover;
+  max-width: none;
+}
+
+/* ---- Section rhythm ------------------------------------------------------- */
+.section { margin-top: 116px; }
+
+/* ---- Project cards -------------------------------------------------------- */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter);
+}
+
+.project-card {
+  min-height: 548px;
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.project-card__title {
+  font-size: var(--text-card-title);
+  line-height: var(--leading-card-title);
+  letter-spacing: var(--tracking-card-title);
+  font-weight: var(--weight-light);
+  margin-bottom: 8px;
+}
+
+.project-card__body {
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-dim);
+  max-width: 352px;
+}
+
+/* ---- Captions + logos ----------------------------------------------------- */
+.caption {
+  text-align: center;
+  font-size: var(--text-caption);
+  line-height: var(--leading-caption);
+  font-weight: var(--weight-light);
+  color: var(--color-text-muted);
+  max-width: 875px;
+  margin-inline: auto;
+}
+
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 64px;
+  max-width: 1091px;
+  margin: 72px auto 0;
+}
+.logos img {
+  height: 22px;
+  width: auto;
+  opacity: .95;
+}
+/* Breeze's checkmark extends above its wordmark, so the flex centering pushes
+   the wordmark low; bottom padding re-centers it (art stays 40px = 52 - 12) */
+.logos img.logo--breeze { height: 52px; padding-bottom: 12px; }
+
+/* ---- Bento grid ----------------------------------------------------------- */
+.bento {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+}
+.bento__row {
+  display: flex;
+  gap: var(--gutter);
+}
+.bento__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gutter);
+  flex: 1;
+}
+
+.box {
+  border-radius: var(--radius-card);
+  background: var(--color-box);
+  padding: 12px;
+  overflow: hidden;
+}
+
+/* Fixed slot widths within the 1320 content width (12-col ≈ 88px/col, 24 gap) */
+.box--w4 { width: 424px; flex-shrink: 0; }   /* 4 cols */
+.box--full { width: 100%; }
+
+/* Row-specific sizing */
+.bento__row--top .box { height: 412px; }
+.box--h301 { height: 301px; }
+.box--h501 { height: 501px; }
+.box--h591 { height: 591px; }
+.box--h172 { height: 172px; }
+.box--h389 { height: 389px; }
+.box--h522 { height: 522px; }
+
+.box--grow757 { flex: 757; }
+.box--grow532 { flex: 532; }
+
+/* ---- Footer spacing ------------------------------------------------------- */
+.page-foot { height: 96px; }
+
+/* ============================================================================
+   Responsive
+   ============================================================================ */
+@media (max-width: 900px) {
+  .page { padding: 0 24px; }
+  .section { margin-top: 72px; }
+
+  .hero {
+    font-size: 32px;
+    margin-top: 72px;
+    margin-bottom: 80px;
+    gap: 10px;
+  }
+  /* Switch each line from flex to inline flow so long phrases can wrap and
+     chips wrap together with the words instead of dropping onto their own row */
+  .hero__line { display: block; }
+  .hero__text { white-space: normal; }
+  /* zoom scales the chip AND its pixel-positioned images together,
+     so the image crops stay framed as designed (65x54 -> ~48x40) */
+  .chip { zoom: 0.74; margin: 0 5px; }
+
+  .projects { grid-template-columns: 1fr; }
+  .project-card { min-height: 420px; }
+
+  .logos {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px 48px;
+    margin-top: 48px;
+  }
+  .caption { font-size: 18px; }
+
+  /* Bento collapses to a single stacked column */
+  .bento__row { flex-direction: column; }
+  .box--w4 { width: 100%; }
+  .box--grow757, .box--grow532 { flex: 1; }
+  .bento__row--top .box { height: 240px; }
+  .box--h301 { height: 200px; }
+  .box--h501 { height: 260px; }
+  .box--h591 { height: 300px; }
+  .box--h172 { height: 160px; }
+  .box--h389 { height: 240px; }
+  .box--h522 { height: 300px; }
+}
+
+@media (max-width: 520px) {
+  .page { padding: 0 16px; }
+  .section { margin-top: 56px; }
+
+  .hero {
+    font-size: 24px;
+    margin-top: 48px;
+    margin-bottom: 64px;
+    gap: 8px;
+  }
+  .chip { zoom: 0.62; margin: 0 4px; }
+
+  .project-card { min-height: 360px; padding: 28px; }
+
+  .caption { font-size: 17px; }
+  .logos { gap: 28px 40px; margin-top: 40px; }
+  .logos img { height: 18px; }
+  .logos img.logo--breeze { height: 42px; padding-bottom: 10px; }
+
+  .page-foot { height: 64px; }
+}

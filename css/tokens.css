@@ -1,0 +1,40 @@
+/* ============================================================================
+   Design tokens — single source of truth for the whole site.
+   Values extracted 1:1 from the Paper file "Portfolio" (page Export).
+   The design-system page renders these directly.
+   ============================================================================ */
+
+:root {
+  /* ---- Color -------------------------------------------------------------- */
+  --color-bg:          #09090A;   /* page background                          */
+  --color-card:        #131416;   /* project / "demo" cards                   */
+  --color-box:         #0D0D0D;   /* bento placeholder boxes                  */
+  --color-stroke:      #FFFFFF1C;  /* inset border overlay (white 11%)        */
+
+  --color-text:        #FFFFFF;    /* primary text                            */
+  --color-text-muted:  #FFFFFF99;  /* captions (~60%)                         */
+  --color-text-dim:    #FFFFFF73;  /* card body copy (~45%)                   */
+
+  /* ---- Typography --------------------------------------------------------- */
+  --font-sans: "Roobert", system-ui, -apple-system, sans-serif;
+
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-medium:  500;
+
+  /* Type scale (size / line-height / tracking) */
+  --text-hero:        48px;   --leading-hero:    120%;
+  --text-card-title:  32px;   --leading-card-title: 40px;  --tracking-card-title: -0.02em;
+  --text-body:        16px;   --leading-body:    20px;
+  --text-caption:     20px;   --leading-caption: 120%;
+  --text-label:       12px;   --leading-label:   160%;     --tracking-label: 0.01em;
+
+  /* ---- Radius ------------------------------------------------------------- */
+  --radius-card: 24px;
+
+  /* ---- Layout / spacing --------------------------------------------------- */
+  --page-width:   1440px;
+  --content-width: 1320px;   /* 1440 - 60px side margins × 2 */
+  --page-margin:  60px;
+  --gutter:       24px;      /* bento / card grid gap */
+}

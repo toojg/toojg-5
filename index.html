@@ -1,0 +1,121 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jeremy Garcia — Product Designer</title>
+<meta name="description" content="Jeremy Garcia — digital product designer. Portfolio, selected work, and experiments." />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/site.css" />
+
+<div class="page">
+  <!-- Nav -->
+  <nav class="nav">
+    <span class="nav__brand">Jeremy Garcia</span>
+    <div class="nav__links">
+      <a class="nav__link" href="mailto:hello@example.com">email</a>
+      <a class="nav__link" href="#">resume</a>
+      <a class="nav__link" href="#">linkedin</a>
+      <a class="nav__link" href="#">instagram</a>
+    </div>
+  </nav>
+
+  <!-- Hero — four deliberate centered lines, matching the Paper layout -->
+  <h1 class="hero">
+    <span class="hero__line">
+      <span class="hero__text">Jeremy Garcia</span>
+      <span class="chip" aria-hidden="true">
+        <img src="assets/hero/portrait.png" alt="" style="width:67px;height:85px;left:0;top:-5px" />
+      </span>
+    </span>
+    <span class="hero__line">
+      <span class="hero__text">is a digital</span>
+      <span class="chip" aria-hidden="true" style="background:#F7FBFD">
+        <img src="assets/hero/blue-computer.png" alt="" style="width:77px;height:55px;left:-5px;top:-3px" />
+      </span>
+      <span class="hero__text">product designer</span>
+    </span>
+    <span class="hero__line">
+      <span class="hero__text">passionate about collaboration</span>
+      <span class="chip" aria-hidden="true">
+        <img src="assets/hero/two-men.gif" alt="" style="width:101px;height:56px;left:-6.5px;top:-1px" />
+      </span>
+    </span>
+    <span class="hero__line">
+      <span class="hero__text">visual craft</span>
+      <span class="chip" aria-hidden="true">
+        <img src="assets/hero/portrait.png" alt="" style="width:67px;height:85px;left:0;top:-5px" />
+        <img src="assets/hero/line-drawing.gif" alt="" style="width:84px;height:55px;left:-2px;top:0" />
+      </span>
+      <span class="hero__text">and emerging technology.</span>
+      <span class="chip" aria-hidden="true" style="background:#212733">
+        <img src="assets/hero/pixel-face.png" alt="" style="width:50px;height:31px;left:8px;top:12px" />
+      </span>
+    </span>
+  </h1>
+
+  <!-- Project cards -->
+  <section class="section projects" aria-label="Selected projects">
+    <article class="project-card inset-border">
+      <h2 class="project-card__title">Project</h2>
+      <p class="project-card__body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed pretium nisl. Donec sed sollicitudin odio, ut aliquam elit.</p>
+    </article>
+    <article class="project-card inset-border">
+      <h2 class="project-card__title">Project</h2>
+      <p class="project-card__body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed pretium nisl. Donec sed sollicitudin odio, ut aliquam elit.</p>
+    </article>
+    <article class="project-card inset-border">
+      <h2 class="project-card__title">Project</h2>
+      <p class="project-card__body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed pretium nisl. Donec sed sollicitudin odio, ut aliquam elit.</p>
+    </article>
+  </section>
+
+  <!-- Companies -->
+  <section class="section" aria-label="Companies">
+    <p class="caption">Over the years, I've been able to work with some amazing companies, orgs and studios</p>
+    <div class="logos">
+      <img src="assets/logos/kenect.svg" alt="Kenect" />
+      <img src="assets/logos/guggenheim.svg" alt="Guggenheim" />
+      <img class="logo--breeze" src="assets/logos/breeze.svg" alt="Breeze" />
+      <img src="assets/logos/autodesk.svg" alt="Autodesk" />
+    </div>
+  </section>
+
+  <!-- CV caption -->
+  <section class="section" aria-label="Contact">
+    <p class="caption">This website is my CV. Want to know more about these projects? Lets talk!</p>
+  </section>
+
+  <!-- Bento grid (empty placeholder boxes — filled one-off later) -->
+  <section class="section bento" aria-label="Work">
+    <!-- Row: three square boxes across the full width -->
+    <div class="bento__row bento__row--top">
+      <div class="box box--w4 inset-border"></div>
+      <div class="box box--w4 inset-border"></div>
+      <div class="box box--w4 inset-border"></div>
+    </div>
+    <!-- Full-width band -->
+    <div id="bento-flock" class="box box--full box--h301 inset-border"></div>
+    <!-- Full-width band -->
+    <div class="box box--full box--h501 inset-border"></div>
+    <!-- Row: tall box beside a stacked pair -->
+    <div class="bento__row">
+      <div class="box box--w4 box--h591 inset-border"></div>
+      <div class="bento__col">
+        <div class="box box--h172 inset-border"></div>
+        <div class="box box--h389 inset-border"></div>
+      </div>
+    </div>
+    <!-- Row: wide + narrow -->
+    <div class="bento__row">
+      <div class="box box--grow757 box--h522 inset-border"></div>
+      <div class="box box--grow532 box--h522 inset-border"></div>
+    </div>
+  </section>
+
+  <div class="page-foot"></div>
+</div>
+
+<script type="module">
+  import { mount } from './js/experiments/flock-of-cursors.js';
+  mount(document.getElementById('bento-flock'));
+</script>

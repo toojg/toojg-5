@@ -1,0 +1,103 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Experiments — Jeremy Garcia</title>
+<meta name="robots" content="noindex" />
+<meta name="description" content="Private preview of interactive experiments." />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="css/experiments.css" />
+
+<!-- three.js for the WebGL experiments (photogrammetry, connect4) -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
+
+<div class="page">
+  <nav class="nav">
+    <a class="nav__brand" href="index.html">Jeremy Garcia</a>
+    <div class="nav__links">
+      <a class="nav__link" href="index.html">home</a>
+      <span class="nav__link" style="color:var(--color-text-dim)">experiments</span>
+    </div>
+  </nav>
+
+  <div class="xp">
+    <header class="xp__head">
+      <div class="xp__eyebrow">Private preview</div>
+      <h1 class="xp__title">Experiments.</h1>
+      <p class="xp__lede">A scratchpad of interactive pieces — just the code that makes each
+        one work, mounted in a clean frame so I can adjust, add, or swap them before dropping
+        any into the portfolio. Not linked from the site.</p>
+    </header>
+
+    <div class="xp-list"></div>
+  </div>
+
+  <div class="page-foot"></div>
+</div>
+
+<script type="module">
+  import { EXPERIMENTS } from './js/experiments-registry.js';
+
+  const list = document.querySelector('.xp-list');
+  const instances = new Map(); // id -> { state:'loading'|'mounted', inst? }
+
+  const loadingHTML = '<div class="xp-stage__loading">Loading…</div>';
+
+  // Build a card per experiment
+  for (const xp of EXPERIMENTS) {
+    const item = document.createElement('div');
+    item.className = 'xp-item' + (xp.wide ? ' xp-item--wide' : '');
+    item.innerHTML = `
+      <div class="xp-item__meta">
+        <div class="xp-item__name"></div>
+        <div class="xp-item__tech"></div>
+        <div class="xp-item__note"></div>
+      </div>
+      <div class="xp-stage inset-border" style="aspect-ratio:${xp.aspect}">${loadingHTML}</div>`;
+    item.querySelector('.xp-item__name').textContent = xp.name;
+    item.querySelector('.xp-item__tech').textContent = xp.tech;
+    item.querySelector('.xp-item__note').textContent = xp.note;
+    const stage = item.querySelector('.xp-stage');
+    stage.dataset.id = xp.id;
+    list.appendChild(item);
+  }
+
+  const byId = Object.fromEntries(EXPERIMENTS.map((x) => [x.id, x]));
+
+  // Lazy-mount when a stage scrolls into view; unmount when it leaves.
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const stage = entry.target;
+      const id = stage.dataset.id;
+      if (entry.isIntersecting) {
+        if (instances.has(id)) continue;
+        instances.set(id, { state: 'loading' });
+        byId[id].load().then((mod) => {
+          const rec = instances.get(id);
+          if (!rec || rec.state !== 'loading') return; // left view before load finished
+          stage.innerHTML = '';
+          instances.set(id, { state: 'mounted', inst: mod.mount(stage) });
+        }).catch((err) => {
+          console.error('Failed to load experiment', id, err);
+          stage.innerHTML = '<div class="xp-stage__loading">Failed to load.</div>';
+        });
+      } else {
+        const rec = instances.get(id);
+        if (!rec) continue;
+        if (rec.state === 'mounted' && rec.inst) rec.inst.destroy();
+        instances.delete(id);
+        stage.innerHTML = loadingHTML;
+      }
+    }
+  }, { rootMargin: '150px', threshold: 0.01 });
+
+  document.querySelectorAll('.xp-stage').forEach((s) => io.observe(s));
+</script>

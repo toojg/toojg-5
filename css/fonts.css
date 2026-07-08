@@ -1,0 +1,38 @@
+/* ============================================================================
+   Roobert — Displaay Type Foundry
+   ----------------------------------------------------------------------------
+   Regular (400) and Medium (500) are the LICENSED web cuts (DP_order_167248).
+   Light (300) is currently the TRIAL cut and is NOT licensed for public use.
+
+   ⚠️  BEFORE LAUNCH: license Roobert Light for web, drop the licensed
+   Roobert-Light.woff2/.woff into /assets/fonts/, and swap the `src` on the
+   300-weight @font-face below. That is the ONLY change required — every Light
+   usage on the site flows through this one declaration.
+   ============================================================================ */
+
+@font-face {
+  font-family: "Roobert";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  /* TRIAL — replace with licensed Light before launch */
+  src: url("../assets/fonts/Roobert-TRIAL-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Roobert";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Roobert-Regular.woff2") format("woff2"),
+       url("../assets/fonts/Roobert-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Roobert";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Roobert-Medium.woff2") format("woff2"),
+       url("../assets/fonts/Roobert-Medium.woff") format("woff");
+}

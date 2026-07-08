@@ -1,0 +1,185 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design System — Jeremy Garcia</title>
+<meta name="description" content="Color tokens, type scale, and components for the Jeremy Garcia portfolio." />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/tokens.css" />
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="css/design-system.css" />
+
+<div class="page">
+  <!-- Nav (shared) -->
+  <nav class="nav">
+    <a class="nav__brand" href="index.html">Jeremy Garcia</a>
+    <div class="nav__links">
+      <a class="nav__link" href="index.html">home</a>
+      <a class="nav__link" href="design-system.html">system</a>
+    </div>
+  </nav>
+
+  <div class="ds">
+    <!-- Header -->
+    <header class="ds__head">
+      <div class="ds__eyebrow">Design System</div>
+      <h1 class="ds__title">The building blocks of the site.</h1>
+      <p class="ds__lede">Every color, type style, and component on this portfolio is defined
+        once as a token and reused everywhere. This page is the source of truth.</p>
+    </header>
+
+    <!-- Colors -->
+    <section class="ds-section">
+      <div class="ds-section__label">
+        <span class="ds-section__num">01</span>
+        <span class="ds-section__name">Color</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-bg)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Background</div>
+            <div class="swatch__hex">#09090A</div>
+            <div class="swatch__role">Page background</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-card)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Card</div>
+            <div class="swatch__hex">#131416</div>
+            <div class="swatch__role">Project cards</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-box)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Box</div>
+            <div class="swatch__hex">#0D0D0D</div>
+            <div class="swatch__role">Bento placeholder boxes</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-stroke)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Stroke</div>
+            <div class="swatch__hex">rgba(255,255,255,.11)</div>
+            <div class="swatch__role">Inset border overlay</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-text)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Text</div>
+            <div class="swatch__hex">#FFFFFF</div>
+            <div class="swatch__role">Primary text</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-text-muted)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Text / Muted</div>
+            <div class="swatch__hex">rgba(255,255,255,.60)</div>
+            <div class="swatch__role">Captions, secondary</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__chip"><div class="swatch__fill" style="background:var(--color-text-dim)"></div></div>
+          <div class="swatch__meta">
+            <div class="swatch__name">Text / Dim</div>
+            <div class="swatch__hex">rgba(255,255,255,.45)</div>
+            <div class="swatch__role">Body copy on cards</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section class="ds-section">
+      <div class="ds-section__label">
+        <span class="ds-section__num">02</span>
+        <span class="ds-section__name">Typography — Roobert</span>
+      </div>
+
+      <div class="type-row">
+        <div class="type-row__spec"><b>Hero</b>48px · 120% · Light</div>
+        <div class="type-sample--hero">Digital product design, end to end.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__spec"><b>Card title</b>32px · 40px · Light · -0.02em</div>
+        <div class="type-sample--title">Selected work</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__spec"><b>Caption</b>20px · 120% · Light · muted</div>
+        <div class="type-sample--caption">Over the years, I've worked with some amazing teams.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__spec"><b>Body</b>16px · 20px · Regular · dim</div>
+        <div class="type-sample--body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed pretium nisl.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-row__spec"><b>Label / Nav</b>12px · 160% · Light · 0.01em</div>
+        <div class="type-sample--label">email · resume · linkedin · instagram</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-row__spec"><b>Weights</b>Light 300 · Regular 400 · Medium 500</div>
+        <div class="type-weights">
+          <span class="fw-300">Aa</span>
+          <span class="fw-400">Aa</span>
+          <span class="fw-500">Aa</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components -->
+    <section class="ds-section">
+      <div class="ds-section__label">
+        <span class="ds-section__num">03</span>
+        <span class="ds-section__name">Components</span>
+      </div>
+      <div class="ds-components">
+
+        <div class="ds-demo">
+          <div class="ds-demo__stage">
+            <div class="mini-card inset-border">
+              <div class="mini-card__title">Project</div>
+              <div class="mini-card__body">A short description of the work.</div>
+            </div>
+          </div>
+          <div class="ds-demo__caption"><b>Project card</b> — #131416, radius 24, 36 padding,
+            content bottom-aligned, inset stroke.</div>
+        </div>
+
+        <div class="ds-demo">
+          <div class="ds-demo__stage">
+            <div class="mini-box inset-border" style="max-width:260px"></div>
+          </div>
+          <div class="ds-demo__caption"><b>Bento box</b> — #0D0D0D placeholder, radius 24,
+            inset stroke. Filled one-off with work or a widget.</div>
+        </div>
+
+        <div class="ds-demo">
+          <div class="ds-demo__stage">
+            <div class="mini-nav">
+              <span>Jeremy Garcia</span>
+              <span class="mini-nav__links"><a href="#">email</a><a href="#">resume</a><a href="#">linkedin</a></span>
+            </div>
+          </div>
+          <div class="ds-demo__caption"><b>Nav</b> — brand left, links right, 12px label type.</div>
+        </div>
+
+        <div class="ds-demo">
+          <div class="ds-demo__stage" style="gap:16px;flex-direction:column">
+            <span class="type-sample--body" style="color:var(--color-text)">Read the case study
+              <a class="link-inline" href="#">here</a></span>
+          </div>
+          <div class="ds-demo__caption"><b>Inline link</b> — underline via the stroke token,
+            fades to muted on hover.</div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <div class="page-foot"></div>
+</div>

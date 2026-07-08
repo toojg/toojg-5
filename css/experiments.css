@@ -1,0 +1,179 @@
+/* ============================================================================
+   experiments.css — the experiments preview page + the Now Playing card.
+   ============================================================================ */
+
+.xp { padding: 96px 0 120px; }
+
+.xp__head { max-width: 720px; margin-bottom: 72px; }
+.xp__eyebrow {
+  font-size: var(--text-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 20px;
+}
+.xp__title {
+  font-size: 64px;
+  line-height: 108%;
+  font-weight: var(--weight-light);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.xp__lede {
+  font-size: var(--text-caption);
+  line-height: 140%;
+  font-weight: var(--weight-light);
+  color: var(--color-text-muted);
+}
+
+/* Card grid */
+.xp-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 48px 24px;
+}
+.xp-item--wide { grid-column: 1 / -1; }
+
+.xp-item__meta { margin-bottom: 20px; }
+.xp-item__name {
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: var(--weight-light);
+  letter-spacing: -0.01em;
+}
+.xp-item__tech {
+  font-size: var(--text-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  margin-top: 8px;
+}
+.xp-item__note {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-text-muted);
+  margin-top: 12px;
+  max-width: 60ch;
+}
+
+/* Stage — a black framed box the experiment mounts into */
+.xp-stage {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: #000;
+}
+.xp-stage__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--color-text-dim);
+}
+/* Constrain the very wide (landscape) experiment so it isn't enormous */
+.xp-item--wide .xp-stage { max-width: 760px; margin: 0 auto; }
+
+@media (max-width: 720px) {
+  .xp__title { font-size: 44px; }
+  .xp-list { grid-template-columns: 1fr; }
+}
+
+/* ============================================================================
+   Now Playing card (scoped .np-*)
+   ============================================================================ */
+.np {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  font-family: var(--font-sans);
+}
+.np-empty {
+  position: absolute;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.3);
+  transition: opacity 0.4s ease;
+}
+.np-empty.is-hidden { opacity: 0; pointer-events: none; }
+
+.np-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.np-card.is-visible { opacity: 1; }
+
+.np-art {
+  width: 62%;
+  max-width: 280px;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.04);
+  margin-bottom: 28px;
+  flex-shrink: 0;
+}
+.np-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.np-img.is-loaded { opacity: 1; }
+
+.np-track {
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 6px;
+}
+.np-artist {
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+.np-listening {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.np-listening.is-active { opacity: 1; }
+.np-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1db954;
+  flex-shrink: 0;
+  animation: np-pulse 2s ease-in-out infinite;
+}
+.np-label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.4);
+}
+@keyframes np-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
