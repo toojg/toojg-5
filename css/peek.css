@@ -1,0 +1,186 @@
+/* ============================================================================
+   peek.css — chrome for the reusable "closer look" pattern (js/bento-peek.js):
+   a glass button in a bento box's corner, a full-page dimming scrim, a spotlight
+   caption, and a modal (desktop) / drawer (mobile) dialog. Generic peek-* classes,
+   not tied to any one box. Overlay nodes render at <body> level.
+   ============================================================================ */
+
+/* ---- Glass button --------------------------------------------------------- */
+.peek-btn {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  -webkit-backdrop-filter: blur(12px) saturate(1.6);
+  backdrop-filter: blur(12px) saturate(1.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .35);
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.peek-btn > svg { width: 21px; height: 21px; }
+.peek-btn:hover {
+  background: rgba(255, 255, 255, .2);
+  transform: scale(1.06);
+}
+.peek-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+/* Fallback where backdrop-filter is unsupported: a more opaque fill stays legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .peek-btn { background: rgba(40, 40, 44, .82); }
+  .peek-btn:hover { background: rgba(56, 56, 60, .9); }
+}
+
+/* ---- Full-page scrim ------------------------------------------------------ */
+.peek-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.peek-scrim.is-dim { opacity: .82; }            /* hover spotlight — clicks pass through */
+.peek-scrim.is-open { opacity: .72; pointer-events: auto; } /* dialog backdrop */
+/* Desktop (modal): a subtle blur on the page behind the open dialog */
+@media (min-width: 901px) {
+  .peek-scrim.is-open {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* Adopting box lifted above the scrim during the hover spotlight */
+.peek-lifted { z-index: 1001; }
+
+/* ---- Spotlight caption (under the box on hover) --------------------------- */
+.peek-caption {
+  position: fixed;
+  z-index: 1001;
+  color: var(--color-text);
+  font-size: var(--text-body);
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.peek-caption.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Persistent caption under the box on mobile — in-flow so it scrolls with the
+   page. The fixed hover caption above is hidden on mobile; this replaces it. */
+.peek-caption-static {
+  display: none;
+  margin: -6px 0 0;
+  color: var(--color-text);
+  font-size: var(--text-body);
+  line-height: 1.3;
+}
+@media (max-width: 900px) {
+  .peek-caption { display: none; }
+  .peek-caption-static { display: block; }
+}
+
+/* ---- Shared dialog surface (modal + drawer) ------------------------------- */
+.peek-modal,
+.peek-drawer {
+  position: fixed;
+  z-index: 1002;
+  color: var(--color-text);
+  background: rgba(20, 20, 22, .72);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid var(--color-stroke);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .peek-modal, .peek-drawer { background: rgba(18, 18, 20, .96); }
+}
+
+/* Modal: centered card */
+.peek-modal {
+  left: 50%;
+  top: 50%;
+  width: min(520px, calc(100vw - 48px));
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  border-radius: var(--radius-card);
+  transform: translate(-50%, -50%) scale(.96);
+  opacity: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.peek-modal.is-shown { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+/* Drawer: bottom sheet */
+.peek-drawer {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 85vh;
+  overflow: auto;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.3, .8, .3, 1);
+}
+.peek-drawer.is-shown { transform: translateY(0); }
+.peek-drawer__handle {
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 10px auto 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .3);
+}
+
+/* ---- Dialog contents ------------------------------------------------------ */
+.peek-dialog__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--color-stroke);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.peek-dialog__close > svg { width: 18px; height: 18px; }
+.peek-dialog__close:hover { background: rgba(255, 255, 255, .14); }
+.peek-dialog__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.peek-dialog__body { padding: 28px; min-height: 220px; }
+.peek-placeholder {
+  color: var(--color-text-dim);
+  font-size: var(--text-body);
+}
+
+/* ---- Reduced motion ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .peek-btn,
+  .peek-scrim,
+  .peek-caption,
+  .peek-modal,
+  .peek-drawer { transition: none; }
+  .peek-modal { transform: translate(-50%, -50%); }
+  .peek-drawer { transform: translateY(0); }
+}

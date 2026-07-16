@@ -6,6 +6,18 @@
 <link rel="stylesheet" href="css/tokens.css" />
 <link rel="stylesheet" href="css/base.css" />
 <link rel="stylesheet" href="css/site.css" />
+<link rel="stylesheet" href="css/peek.css" />
+<link rel="stylesheet" href="css/hint.css" />
+
+<!-- three.js for the WebGL experiments (photogrammetry) -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
 
 <div class="page">
   <!-- Nav -->
@@ -74,24 +86,24 @@
     <p class="caption">Companies, orgs and studios I've been lucky to work with</p>
     <div class="logos" id="logo-cycler">
       <span class="logos__slot">
-        <img src="assets/logos/kenect.svg" alt="Kenect" />
-        <img class="logo--mfa" src="assets/logos/mfa-design.svg" alt="MFA Design" />
-        <img class="logo--previ" src="assets/logos/previ.svg" alt="Previ" />
+        <img src="assets/logos/kenect.svg?v=2" alt="Kenect" />
+        <img class="logo--mfa" src="assets/logos/mfa-design.svg?v=2" alt="MFA Design" />
+        <img class="logo--previ" src="assets/logos/previ.svg?v=2" alt="Previ" />
       </span>
       <span class="logos__slot">
-        <img src="assets/logos/guggenheim.svg" alt="Guggenheim" />
-        <img src="assets/logos/collected-works.svg" alt="The Collected Works" />
-        <img src="assets/logos/sunrun.svg" alt="Sunrun" />
+        <img src="assets/logos/guggenheim.svg?v=2" alt="Guggenheim" />
+        <img src="assets/logos/collected-works.svg?v=2" alt="The Collected Works" />
+        <img src="assets/logos/sunrun.svg?v=2" alt="Sunrun" />
       </span>
       <span class="logos__slot">
-        <img class="logo--breeze" src="assets/logos/breeze.svg" alt="Breeze" />
-        <img class="logo--mid" src="assets/logos/utah-tech.svg" alt="Utah Tech University" />
-        <img class="logo--tall" src="assets/logos/big-monocle.svg" alt="Big Monocle" />
+        <img class="logo--breeze" src="assets/logos/breeze.svg?v=2" alt="Breeze" />
+        <img class="logo--mid" src="assets/logos/utah-tech.svg?v=2" alt="Utah Tech University" />
+        <img class="logo--tall" src="assets/logos/big-monocle.svg?v=2" alt="Big Monocle" />
       </span>
       <span class="logos__slot">
-        <img src="assets/logos/autodesk.svg" alt="Autodesk" />
-        <img src="assets/logos/album.svg" alt="Album" />
-        <img src="assets/logos/corso.svg" alt="Corso" />
+        <img src="assets/logos/autodesk.svg?v=2" alt="Autodesk" />
+        <img src="assets/logos/album.svg?v=2" alt="Album" />
+        <img src="assets/logos/corso.svg?v=2" alt="Corso" />
       </span>
     </div>
   </section>
@@ -105,8 +117,8 @@
   <section class="section bento" aria-label="Work">
     <!-- Row: three square boxes across the full width -->
     <div class="bento__row bento__row--top">
-      <div class="box box--w4 inset-border"></div>
-      <div class="box box--w4 inset-border"></div>
+      <div id="bento-photogrammetry" class="box box--w4 inset-border"></div>
+      <div id="bento-location" class="box box--w4 inset-border"></div>
       <div class="box box--w4 inset-border"></div>
     </div>
     <!-- Full-width band -->
@@ -126,6 +138,11 @@
       <div class="box box--grow757 box--h522 inset-border"></div>
       <div class="box box--grow532 box--h522 inset-border"></div>
     </div>
+    <!-- Row: boarding pass (8 cols) + square (4 cols) -->
+    <div class="bento__row">
+      <div id="bento-boarding" class="box box--boarding inset-border"></div>
+      <div class="box box--w4 box--boarding-side inset-border"></div>
+    </div>
   </section>
 
   <div class="page-foot"></div>
@@ -134,6 +151,19 @@
 <script type="module">
   import { mount } from './js/experiments/flock-of-cursors.js';
   import { mount as mountLogos } from './js/logo-cycler.js';
-  mount(document.getElementById('bento-flock'));
+  import { mount as mountBoarding } from './js/experiments/boarding-pass.js';
+  import { mount as mountPhotogrammetry } from './js/experiments/photogrammetry.js';
+  import { mount as mountLocation } from './js/experiments/my-location.js';
+  import { attachHint } from './js/bento-hint.js';
+  const flockBox = document.getElementById('bento-flock');
+  mount(flockBox);
+  attachHint(flockBox, { text: 'What do you call a flock of cursors?' });
+  const locationBox = document.getElementById('bento-location');
+  mountLocation(locationBox);
+  attachHint(locationBox, { text: 'Based in Salt Lake City, working worldwide' });
   mountLogos(document.getElementById('logo-cycler'));
+  mountBoarding(document.getElementById('bento-boarding'));
+  // The bento box goes short + full-width under 900px, so size the scan up a touch and nudge it down slightly
+  const pgMobile = window.matchMedia('(max-width: 900px)').matches;
+  mountPhotogrammetry(document.getElementById('bento-photogrammetry'), { variant: 'textured', zoom: pgMobile ? 1.5 : 1.15, offsetY: pgMobile ? -0.33 : -0.28 });
 </script>

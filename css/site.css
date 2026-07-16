@@ -216,6 +216,282 @@
 .box--grow757 { flex: 757; }
 .box--grow532 { flex: 532; }
 
+/* Photogrammetry scan fills the box edge-to-edge (its stage is its own frame) */
+#bento-photogrammetry { padding: 0; }
+
+/* ---- My Location bento block (scoped .loc-*) ------------------------------
+   Dark CARTO map centred on Salt Lake City with a softly pulsing pin. The map
+   fills the box edge-to-edge; the box's overflow:hidden clips the rounded
+   corners. Shared with the experiments page, which loads this stylesheet too. */
+#bento-location { padding: 0; }
+.loc {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--font-sans);
+}
+.loc__map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  /* Lift the very dark CARTO tiles off the near-black box so the map reads */
+  filter: brightness(2.2) contrast(1.6);
+  transition: opacity 0.6s ease;
+}
+/* Crisp state outlines drawn on their own layer, so the base map's filter
+   doesn't wash them out. Sits above the map, below the pin. */
+.loc__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* Glowing, softly pulsing pin — the location is fixed at the map centre */
+.loc__pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.loc__pin::before { /* pulsing halo — hugs the core */
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0) 75%);
+  animation: loc-pulse 2.6s ease-in-out infinite;
+}
+.loc__pin::after { /* solid white core */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.55);
+}
+@keyframes loc-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.5); opacity: 0.35; }
+}
+.loc__attrib {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.28);
+  z-index: 3;
+}
+
+/* ---- Boarding Pass bento block --------------------------------------------
+   Stage is laid out at its designed 872×532 and scaled to the container width
+   (transform set by JS), so every measurement below is a Figma design px. */
+/* 8 cols wide (872 + 24 gutter + 424 = 1320); shrinks before its fixed-width
+   row sibling when the viewport narrows, and the sibling stretches to match
+   whatever height the scaled stage lands on */
+.box--boarding {
+  width: 872px;
+  max-width: 100%;
+  min-width: 0;
+  flex-shrink: 1;
+  padding: 0;
+  height: auto;
+}
+
+.bp {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.bp-stage {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 872px;
+  height: 532px;
+  transform-origin: 0 0;
+}
+
+/* Crossfading city photos — Figma frames the 16:9 photos at 1086×611 shifted
+   (-155,-13), showing more of each scene than a centered cover crop would */
+.bp-photos {
+  position: absolute;
+  inset: 0;
+}
+.bp-photo {
+  position: absolute;
+  left: -155px;
+  top: -13px;
+  width: 1086px;
+  height: 610.88px;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.bp-photo.is-active { opacity: 1; }
+
+/* Portrait (mobile): the stage narrows and the phone is centered + enlarged
+   (geometry set by JS), so the city photo covers the whole stage behind it
+   instead of sitting off to the side */
+.bp--portrait .bp-photo {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/* The Vegas sign sits left-of-centre in its photo; the portrait cover crop only
+   shows the middle slice, so pull it left to centre the sign (its top lands in
+   the band above the phone) */
+.bp--portrait .bp-photo--las { object-position: 27% center; }
+
+/* Phone — Figma: x 466, y 33, 333.32×684 (bottom cropped by the block) */
+.bp-phone {
+  position: absolute;
+  left: 466px;
+  top: 33px;
+  width: 333.32px;
+  height: 684px;
+}
+.bp-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* drop-shadow follows the phone's rounded silhouette (a box-shadow would be a
+     rectangle); design-px values scale with the stage transform in both modes */
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .18)) drop-shadow(0 16px 34px rgba(0, 0, 0, .28));
+}
+
+/* Screen glass area (499-space 21,16,458×991 → ×0.668) and the 458-wide UI */
+.bp-screen {
+  position: absolute;
+  left: 14.03px;
+  top: 10.69px;
+  width: 305.93px;
+  height: 661.99px;
+  border-radius: 36px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  /* Navy backdrop so any sub-pixel gap between the stacked navy layers
+     (header, gradient bg, card top) falls back to navy, not a light hairline. */
+  background: #001633;
+}
+.bp-screen:active { cursor: grabbing; }
+.bp-ui {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 458px;
+  height: 991px;
+  transform: scale(.66797);
+  transform-origin: 0 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bp-screen-bg {
+  position: absolute;
+  left: 0;
+  top: 137.79px;
+  width: 458px;
+  height: 853.93px;
+  object-fit: cover;
+}
+.bp-header {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 458px;
+  /* +1px past the gradient's top edge (137.79) so the opaque navy overlaps it
+     instead of leaving a sub-pixel seam where the two layers abut. */
+  height: 138.79px;
+  background: #001633; /* Breeze SkyBlue 100 */
+}
+.bp-statusbar {
+  position: absolute;
+  left: 18px;
+  top: 15px;
+  width: 422px;
+  height: 50px;
+}
+.bp-title {
+  position: absolute;
+  left: 225.77px;
+  top: 95.6px;
+  width: 133px;
+  height: 10px;
+  transform: translateX(-50%);
+}
+
+/* Card carousel — each SVG is 401×560 with the 381×539.5 card inset by the
+   drop-shadow bleed (9.77, 7.33), so slots offset the image to compensate */
+.bp-track {
+  position: absolute;
+  left: 0;
+  top: 137.79px;
+  display: flex;
+  gap: 9.77px;
+  will-change: transform;
+}
+.bp-card {
+  position: relative;
+  width: 381.06px;
+  height: 539.55px;
+  flex-shrink: 0;
+}
+.bp-card > img {
+  position: absolute;
+  left: -9.77px;
+  top: -7.33px;
+  width: 401px;
+  height: 560px;
+  max-width: none;
+}
+
+.bp-dots {
+  position: absolute;
+  top: 699.13px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6.18px;
+}
+/* Step dots double as tap targets; a ::after pad enlarges the click/touch area
+   well beyond the 12px visual dot without disturbing the Figma spacing */
+.bp-dot {
+  position: relative;
+  width: 12.36px;
+  height: 12.36px;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: background .3s ease, transform .2s ease;
+}
+.bp-dot::after {
+  content: '';
+  position: absolute;
+  inset: -12px -6px;
+}
+.bp-dot:hover { transform: scale(1.18); }
+.bp-dot.is-active { background: #001633; }
+
+.bp-tabbar {
+  position: absolute;
+  left: 0;
+  top: 881.8px;
+  width: 458px;
+  height: 117px;
+}
+
 /* ---- Footer spacing ------------------------------------------------------- */
 .page-foot { height: 96px; }
 
@@ -263,6 +539,8 @@
   .box--h172 { height: 160px; }
   .box--h389 { height: 240px; }
   .box--h522 { height: 300px; }
+  /* stacked column: the boarding row's sibling no longer stretches to match */
+  .box--boarding-side { height: 240px; }
 }
 
 @media (max-width: 520px) {
