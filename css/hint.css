@@ -1,0 +1,55 @@
+/* ============================================================================
+   hint.css — chrome for the reusable cursor-following label (js/bento-hint.js):
+   a glass pill that trails the pointer over an adopting bento box, plus a
+   persistent caption shown beneath the box on mobile. Generic hint-* classes,
+   not tied to any one box. The pill renders at <body> level.
+   Shares the glass recipe with .peek-btn in peek.css.
+   ============================================================================ */
+
+/* ---- Cursor-following pill ------------------------------------------------ */
+.hint-follow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  padding: 6px 13px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.2;
+  white-space: nowrap;
+  border: none;
+  background: rgba(255, 255, 255, .12);
+  -webkit-backdrop-filter: blur(12px) saturate(1.6);
+  backdrop-filter: blur(12px) saturate(1.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .25);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+  will-change: transform;
+}
+.hint-follow.is-visible { opacity: 1; }
+/* Fallback where backdrop-filter is unsupported: a more opaque fill stays legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hint-follow { background: rgba(40, 40, 44, .82); }
+}
+
+/* ---- Persistent caption under the box on mobile --------------------------- */
+/* In-flow so it scrolls with the page. The follow pill above is hidden on
+   mobile (no hover); this replaces it. Mirrors .peek-caption-static. */
+.hint-caption-static {
+  display: none;
+  margin: -6px 0 0;
+  color: var(--color-text);
+  font-size: var(--text-body);
+  line-height: 1.3;
+}
+@media (max-width: 900px) {
+  .hint-follow { display: none; }
+  .hint-caption-static { display: block; }
+}
+
+/* ---- Reduced motion ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hint-follow { transition: none; }
+}

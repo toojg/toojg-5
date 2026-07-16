@@ -177,3 +177,41 @@
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.75); }
 }
+
+/* ============================================================================
+   My Location card — static .loc-* styles now live in css/site.css so the home
+   page (which doesn't load this file) can adopt the map bento. The experiments
+   page still gets them via site.css. Interactive .loc-i styles stay below.
+   ============================================================================ */
+
+/* ============================================================================
+   My Location (Interactive) — Leaflet map, dark-themed (scoped .loc-i)
+   ============================================================================ */
+.loc-i {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  font-family: var(--font-sans);
+}
+.loc-i__map { position: absolute; inset: 0; }
+.loc-i .leaflet-container { background: #000; outline: none; }
+
+/* Dark-theme the zoom control */
+.loc-i .leaflet-bar { border: 1px solid #343434; box-shadow: none; }
+.loc-i .leaflet-bar a,
+.loc-i .leaflet-bar a:hover {
+  background: #171717;
+  color: #fff;
+  border-bottom-color: #343434;
+}
+.loc-i .leaflet-bar a:hover { background: #222; }
+
+/* Dark-theme the attribution. The extra .leaflet-container raises specificity
+   above Leaflet's own `.leaflet-container .leaflet-control-attribution` rule,
+   which is injected after this stylesheet and would otherwise win the tie. */
+.loc-i .leaflet-container .leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+}
+.loc-i .leaflet-container .leaflet-control-attribution a { color: rgba(255, 255, 255, 0.55); }
